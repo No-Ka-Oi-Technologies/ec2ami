@@ -9,8 +9,8 @@ for instance_id in $(echo "${instance_ids}" | jq -r '.[]'); do
     # Get the description of the instance
     description=$(aws ec2 describe-instances --instance-ids $instance_id --query 'Reservations[].Instances[].Tags[?Key==`Name`].Value' --output text)
     
-    # Truncate the description at the first space
-    ami_name=$(echo "$current_date-$description" | awk '{print $1}')
+    # Combine the current date with the full description
+    ami_name="$current_date-$description"
     
     # Output instance ID and AMI name
     echo "Instance ID: $instance_id, Creating AMI Name: $ami_name"
